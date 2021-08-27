@@ -97,15 +97,18 @@ item_class='dctype:Image'
 
 for i in images_dict:
 	filename=i['file']
-	uri="https://voyages-staging.crc.rice.edu/documents/" +filename
+	uri="https://slavevoyages.org/documents/" +filename
 	tmpfile=dl(uri,filename)
 	if tmpfile:
 		try:
 			category=imagecategorydict[i['category_id']]
 			property_dict=i
+			#print(property_dict)
 			del(property_dict['category_id'])
 			property_dict['category']:category
-			item_properties=format_properties(i,ignore_properties=[])
+			if property_dict['voyage_id']!='':
+				property_dict['voyage_id']='https://slavevoyages.org/voyage/'+str(i['voyage_id'])+'/variables'
+			item_properties=format_properties(property_dict,ignore_properties=[])
 			omeka_id=O.create_item(item_properties,item_class)
 			print("created omeka_id=%d" %(omeka_id))
 			time.sleep(5)
@@ -114,7 +117,7 @@ for i in images_dict:
 				O.upload_attachment(omeka_id,item_properties,tmpfile)
 				os.remove(tmpfile)
 			except:
-				print("failed to upload %s to item %s" %(tmpfilee,str(omeka_id)))
+				print("failed to upload %s to item %s" %(tmpfile,str(omeka_id)))
 		except:
 			print("failed to create item from %s" %uri)
 			
