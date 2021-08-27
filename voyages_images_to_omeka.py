@@ -101,11 +101,11 @@ for i in images_dict:
 	tmpfile=dl(uri,filename)
 	if tmpfile:
 		try:
-			category=imagecategorydict[i['category_id']]
 			property_dict={j:i[j] for j in i if j!=None}
 			#print(property_dict)
-			del(property_dict['category_id'])
-			property_dict['category']:category
+			if 'category_id' in property_dict:
+				property_dict['category']=imagecategorydict[i['category_id']]
+				del(property_dict['category_id'])
 			if 'voyage_id' in property_dict:
 				property_dict['voyage_id']='https://slavevoyages.org/voyage/'+str(i['voyage_id'])+'/variables'
 			item_properties=format_properties(property_dict,ignore_properties=[])
