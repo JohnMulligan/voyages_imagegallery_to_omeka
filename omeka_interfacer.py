@@ -1,3 +1,4 @@
+import time
 import json
 import requests
 import urllib
@@ -201,6 +202,7 @@ def get_property_data(properties):
 					p['value']
 				)
 			]
+		time.sleep(1)
 		#print(prop_data)
 		properties_dump[term]=prop_data
 	return properties_dump
